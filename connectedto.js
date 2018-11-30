@@ -168,7 +168,7 @@ function disconnect(userName, text) {
 		connection = foundset.getSelectedRecord().client;
 		var wait = foundset.getSelectedRecord().waiting;
 		foundset.deleteRecord(search);
-		if(waiting != null || waiting != ''){
+		if(wait != null && wait!= ''){
 			returnText = {
 			    "attachments": [
 				{
@@ -181,7 +181,7 @@ function disconnect(userName, text) {
 				returnText = {
 				    "attachments": [
 					{
-			            "title": "Disconnected",
+			            "title": "Disconnected from " + connection,
 			            "text": "",
 			            "color": "#ff0000"
 			        }]
@@ -197,7 +197,7 @@ function disconnect(userName, text) {
 		}
 		wait = foundset.getSelectedRecord().waiting;
 		foundset.deleteRecord(1);
-		if(waiting != null || waiting != ''){
+		if(waiting != null && waiting != ''){
 			returnText = {
 			    "attachments": [
 				{
@@ -328,30 +328,18 @@ function whois() {
 	
 	var qResult = databaseManager.getDataSetByQuery(q,-1);
 	var answer = [];
-//	var returnText = '{';
-//	returnText += '\"attachments\" : [';
 			for(var index = 1 ; index <= qResult.getMaxRowIndex() ; index++){
 				var row = qResult.getRowAsArray(index);
-				if(row[2] == null){
+				if(row[2] == null || row[2] == ''){
 					row[2] = '';
 				} else {
 					var wait = row[2]
 					row[2] = ', In waiting '+ wait; 
 				}
 				answer[1] = row[0]+' connected to ' +row[1]+' ' + row[2] + ".";
-//				returnText += '{';
-//				returnText += ' \"title\": \"'+ row[0]+' connected to ' +row[1]+'' + row[2]+'\",';
-//				returnText += '\"text\": \"\",';
-//				returnText += '\"color\": \"#7CD197\"';
-//				if(index == qResult.getMaxRowIndex())
-//					returnText += '}'
-//				else
-//					returnText += '},'
 				returnText.attachments[index-1].title = row[0]+' connected to ' +row[1]+' ' + row[2] + ".";
 				returnText.attachments[index-1].text = '';
 				returnText.attachments[index-1].color = '#7CD197';
-//				returnText.attachments.push();
-//				returnText.attachments.push(row[0]+' connected to ' +row[1]+' ' + row[2] + ".",'','#7CD197');
 			}
 			
 			for(index =0 ; index < 10; index++){
@@ -361,19 +349,6 @@ function whois() {
 			}
 
 			return returnText;
-//	for(var index = 1 ; index <= qResult.getMaxRowIndex() ; index++){
-//		var row = qResult.getRowAsArray(index);
-//		if(row[2] == null){
-//			row[2] = '';
-//		} else {
-//			var wait = row[2]
-//			row[2] = ', In waiting '+ wait; 
-//		}
-//		answer[1] = row[0]+' connected to ' +row[1]+' ' + row[2] + ".\\";
-//		
-//		
-//	}
-//	return answer;
 }
 
 /**
